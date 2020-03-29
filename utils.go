@@ -27,7 +27,7 @@ func init() {
 }
 
 func bytesToTime(b []byte) time.Time {
-	format := "20060102 15:04:05 CST"
+	format := "20060102 15:04:05 EST"
 	t := string(b)
 	localtime, err := time.ParseInLocation(format, t, time.Local)
 	if err != nil {
