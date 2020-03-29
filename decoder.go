@@ -30,10 +30,10 @@ func (d *ibDecoder) interpret(msgBuf *msgBuffer) {
 		return
 	}
 
-	// if decode error ocours,handle the error
+	// if decode error occurrs, handle the error
 	defer func() {
 		if err := recover(); err != nil {
-			log.Errorf("Deocde error -> %v", err) //TODO: handle error
+			log.Errorf("Decode error -> %v", err) //TODO: handle error
 			d.errChan <- err.(error)
 		}
 	}()
