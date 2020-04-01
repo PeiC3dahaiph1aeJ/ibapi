@@ -2723,7 +2723,7 @@ decodeLoop:
 			}
 
 			msgBuf := NewMsgBuffer(m) // FIXME: use object pool
-			go ic.decoder.interpret(msgBuf)
+			ic.decoder.interpret(msgBuf)
 		case e := <-ic.errChan:
 			log.Error(e)
 		case e := <-ic.decoder.errChan:
