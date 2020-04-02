@@ -2727,7 +2727,7 @@ decodeLoop:
 		case e := <-ic.errChan:
 			log.Error(e)
 		case e := <-ic.decoder.errChan:
-			go ic.wrapper.Error(NO_VALID_ID, BAD_MESSAGE.code, BAD_MESSAGE.msg+e.Error())
+			ic.wrapper.Error(NO_VALID_ID, BAD_MESSAGE.code, BAD_MESSAGE.msg+e.Error())
 		case <-ic.terminatedSignal:
 			break decodeLoop
 		}
