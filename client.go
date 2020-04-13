@@ -74,8 +74,7 @@ func (ic *IbClient) setConnState(connState int) {
 
 // GetReqID before request data or place order
 func (ic *IbClient) GetReqID() int64 {
-	atomic.AddInt64(&ic.reqIDSeq, 1)
-	return ic.reqIDSeq
+	return atomic.AddInt64(&ic.reqIDSeq, 1)
 }
 
 // Set the Wrapper to IbClient

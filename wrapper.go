@@ -98,10 +98,8 @@ type Wrapper struct {
 	orderID int64
 }
 
-func (w *Wrapper) GetNextOrderID() (i int64) {
-	i = w.orderID
-	atomic.AddInt64(&w.orderID, 1)
-	return
+func (w *Wrapper) GetNextOrderID() int64 {
+	return atomic.AddInt64(&w.orderID, 1) - 1
 }
 
 func (w Wrapper) ConnectAck() {
@@ -115,7 +113,6 @@ func (w Wrapper) ConnectionClosed() {
 func (w *Wrapper) NextValidID(reqID int64) {
 	atomic.StoreInt64(&w.orderID, reqID)
 	log.WithField("reqID", reqID).Printf("<NextValidID>: %v.", reqID)
-
 }
 
 func (w Wrapper) ManagedAccounts(accountsList []string) {
