@@ -2659,11 +2659,10 @@ requestLoop:
 			break requestLoop
 		}
 	}
-
 }
 
 //goReceive receive the msg from the socket, get the fields and put them into msgChan
-//goReceive handle the msgBuf which is different from the offical.Not continuously read, but split first and then decode
+//goReceive handle the msgBuf which is different from the official. Not continuously read, but split first and then decode
 func (ic *IbClient) goReceive() {
 	log.Info("Receiver START!")
 	defer func() {
@@ -2686,11 +2685,20 @@ func (ic *IbClient) goReceive() {
 		ic.msgChan <- msgBytes
 	}
 
-	if _, ok := <-ic.terminatedSignal; ok {
+	select {
+	case <-ic.terminatedSignal:
 		return
+	default:
 	}
 
 	err := scanner.Err()
+	if err == nil {
+		// we got EOF, IB GW has closed the connection, notify the wrapper
+		ic.wrapper.Error(NO_VALID_ID, SOCKET_EXCEPTION.code, SOCKET_EXCEPTION.msg)
+		<-ic.terminatedSignal
+		return
+	}
+
 	if err, ok := err.(*net.OpError); ok {
 		if err.Temporary() {
 			// ic.errChan <- err
